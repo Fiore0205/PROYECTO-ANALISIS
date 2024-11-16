@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Torneos Pasados</title>
+    <link rel="stylesheet" href="css/ligasFinalizadas.css">
+</head>
+<body>
+
+<div class="ventana">
+    <h1>Torneos Pasados</h1>
+    <div id="resultados"></div>
+    <button class="boton retorno" onclick="location.href='ligas.html'">↩ Regresar</button>
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    const resultadosContainer = document.getElementById("resultados");
+    const resultados = JSON.parse(localStorage.getItem("resultadosTorneos")) || [];
+
+    if (resultados.length === 0) {
+        resultadosContainer.innerHTML = "<p>No hay resultados disponibles.</p>";
+    } else {
+        resultados.forEach((resultado, index) => {
+            const resultadoHTML = `
+                <div class="resultado">
+                    <h3>Resultado ${index + 1}</h3>
+                    <p><strong>Ganador:</strong> ${resultado.equipoGanador} (${resultado.puntosGanador} puntos)</p>
+                    <p><strong>Perdedor:</strong> ${resultado.equipoPerdedor} (${resultado.puntosPerdedor} puntos)</p>
+                    <p><strong>Comentario:</strong> ${resultado.comentario}</p>
+                </div>
+                <hr>
+            `;
+            resultadosContainer.innerHTML += resultadoHTML;
+        });
+    }
+});
+</script>
+
+</body>
+</html>

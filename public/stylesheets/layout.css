@@ -1,0 +1,283 @@
+@import url('https://fonts.googleapis.com/css2?family=Lato&display=swap');
+
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Lato', sans-serif;
+  min-height: 100vh;
+  overflow-x: hidden;
+  background: rgb(22,191,25);
+  background: linear-gradient(328deg, rgba(22,191,25,1) 0%, rgba(0,0,0,1) 29%);
+}
+
+.container {
+  width: 100vw;
+  height: 87vh;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.image {
+  height: 100%;
+  background: url('../img/inicio.png') center center/cover !important;
+  flex: 0 1 53vw;
+  position: relative;
+}
+
+.content {
+  flex: 0 0 47vw;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: space-evenly;
+  padding: 2rem;
+ 
+  color: white;
+  font: 14px -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+}
+
+.big-bird {
+  width: 16rem;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  fill: rgb(255, 255, 255);
+}
+
+.small-bird {
+ width: 3.5rem;
+ fill: #1da1f2;
+}
+
+h1, h3 {
+  color: white;
+  font-weight: 900;
+}
+
+h1 {
+  font-size: 5.5vw;
+}
+
+h3 {
+  font-size: 2.3rem;
+}
+
+.btn  {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24rem;
+  height: 3.3rem;
+  border-radius: 10vw;
+  font-size: 1rem;
+  text-decoration: none;
+  font-weight: 700;
+}
+
+.btn-signup{
+  background: #1da1f2;
+  color: #fff;
+  transition: all .2s ease;
+  margin-bottom: 20px;
+}
+
+.btn-signup:hover{
+  background: #1f94dd;
+}
+
+.btn-login {
+  
+  color:#ffff;
+  font-family: Georgia, 'Times New Roman', Times, serif;
+  font-size: 25px;
+  border-radius: 1%;
+  border-color: #fff;
+}
+
+
+.footer {
+  padding: 1rem 2%;
+
+
+}
+
+.footer nav {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+}
+
+.footer nav a,
+.footer nav div {
+  text-decoration: none;
+  font-size: 13px;
+  color: #536471;
+  margin: .3rem .5rem;
+  text-transform: capitalize;
+  border-bottom: 1px solid transparent;
+  transition: all .2s ease;
+}
+
+.footer nav a:hover {
+  border-bottom: 1px solid #536471;
+}
+
+@media(max-width: 1050px) {
+  .content {
+    order: -1;
+    max-width: 600px;
+    height: 80vh;
+    margin: 0 auto;
+  }
+
+  .image {
+    height: 50vh;
+    flex:  0 1 100vw;
+  }
+
+  .button {
+    display: flex;
+  }
+
+  .btn {
+    width: 15rem;
+    margin-right: 1rem;
+  }
+
+  h1 {
+    font-size: 8vw;
+  }
+}
+
+@media(max-width: 580px) {
+  .content {
+    padding: 2rem;
+    margin: 0;
+  }
+
+  .button {
+    flex-direction: column;
+  }
+
+  .btn {
+    width: 25rem;
+  }
+  h1 {
+    font-size: 10vw;
+  }
+
+  h3 {
+    font-size: 1.7rem;
+  }
+}
+
+
+.modal {
+  display: none; 
+  position: fixed; 
+  z-index: 1; 
+  padding-top: 100px; 
+  left: 0;
+  top: 0;
+  width: 100%; 
+  height: 100%; 
+  overflow: auto; 
+  background-color: rgb(0,0,0);
+  background-color: rgba(0,0,0,0.4); 
+}
+
+
+.modal-content {
+  background-color:black;
+  margin: auto;
+  border: 1px solid #888;
+  width: 80%;
+  max-width: 700px;
+  max-height: 540px;
+  display: grid;
+  grid-template-rows: 1fr;
+  border-radius: 40px;
+  padding-bottom: 40px;
+  padding-left: 8%;
+  padding-right: 8%;
+}
+#txtCorreo,
+#txtContra{
+  background-color: black;
+  border-color: #888;
+  border-style: groove ;
+  margin: 20px auto auto ;
+  width: 24rem;
+  height: 3.3rem;
+  border-radius: 15px;
+  color: white;
+  padding: 10px;
+  font-size: 15px;
+}
+#txtCorreo::before,
+#txtCorreo::after,
+#txtContra::before,
+#txtContra::after{
+  border-color: #888;
+  background-color: black;
+  color: white;
+}
+
+#btn-Iniciar{
+width: 24rem;
+border-radius: 20px;
+border-color: #1da1f2;
+background-color: black;
+color: #1da1f2;
+height: 3.3rem;
+border-radius: 10vw;
+font-size: 1rem;
+font-family: 'Lato', sans-serif;
+margin-top: 40px;
+}
+
+#btn-Iniciar:hover{
+  color:#1f94dd;
+  background-color:#272a2c;
+}
+
+
+.close {
+  color: #aaaaaa;
+  float: left;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: #1da1f2;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+::placeholder {
+  color: #888;
+  padding: 10px;
+  font-size: 18px;
+}
+
+.respuesta{
+  padding-left: 10px;
+  padding-top: 10px;
+  color: white;
+}
+
+.abajoU{
+color: #55f008;
+background-color: #55f008;
+}

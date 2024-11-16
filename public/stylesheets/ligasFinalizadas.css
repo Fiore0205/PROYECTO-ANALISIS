@@ -1,0 +1,45 @@
+/* Estilos generales del cuerpo */
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    background: rgb(22,191,25);
+    background: linear-gradient(328deg, rgba(22,191,25,1) 0%, rgba(0,0,0,1) 45%);
+    font-family: Arial, sans-serif;
+}
+
+/* Estilo de la ventana */
+.ventana {
+    width: 400px;
+    padding: 30px;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.3);
+    text-align: center;
+}
+
+/* Estilo del título */
+.ventana h1 {
+    color: black;
+    margin-bottom: 20px;
+    font-size: 2em;
+}
+
+/* Estilo de cada liga finalizada */
+.liga {
+    background-color: #f9f9f9;
+    padding: 15px;
+    margin-bottom: 15px;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+    text-align: left;
+}
+
+/* Estilo del texto dentro de cada liga */
+.liga p {
+    margin: 5px 0;
+    font-size: 1em;
+    color: #333;
+}

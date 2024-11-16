@@ -1,0 +1,60 @@
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    background: rgb(22,191,25);
+    background: linear-gradient(328deg, rgba(22,191,25,1) 0%, rgba(0,0,0,1) 45%);
+    font-family: Arial, sans-serif;
+}
+
+.ventana {
+    width: 350px;
+    padding: 30px;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.3);
+    text-align: center;
+}
+
+.ventana h1 {
+    color: black;
+    margin-bottom: 20px;
+    font-size: 2em;
+}
+
+input, textarea {
+    width: 100%;
+    margin: 10px 0;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.boton {
+    display: inline-block;
+    width: auto;
+    padding: 10px 20px;
+    margin: 10px;
+    background-color: black;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 18px;
+    transition: background-color 0.3s ease;
+}
+
+.boton:hover {
+    background-color: #ddd;
+    color: black;
+}
+
+.retorno {
+    background-color: #f44336;
+}
+
+.retorno:hover {
+    background-color: #e57373;
+}

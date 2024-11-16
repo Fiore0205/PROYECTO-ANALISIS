@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> Crear Amistoso</title>
+    <link rel="stylesheet" href="css/crearligas.css">
+</head>
+<body>
+
+<div class="ventana">
+    <h1>Crear Amistoso</h1>
+    <label for="equipo-ganador">Equipos participantes</label>
+    <input type="text" id="equipo-ganador" placeholder="Ingrese los equipos">
+    
+    <label for="puntos-ganador">Tiempos</label>
+    <input type="number" id="puntos-ganador" placeholder="Ingrese la cantidad de tiempos">
+    
+    <label for="equipo-perdedor">Marcador Final</label>
+    <input type="text" id="equipo-perdedor" placeholder="Ingrese el nmarcador final">
+    
+    <label for="comentario">Comentario</label>
+    <textarea id="comentario" rows="3" placeholder="Añadir comentario..."></textarea>
+    
+    <button class="boton" onclick="guardarResultado()">Guardar Resultado</button>
+    <button class="boton retorno" onclick="location.href='amistosos.html'">↩ Regresar</button>
+</div>
+
+<script>
+function guardarResultado() {
+    const equipoGanador = document.getElementById("equipo-ganador").value;
+    const puntosGanador = document.getElementById("puntos-ganador").value;
+    const equipoPerdedor = document.getElementById("equipo-perdedor").value;
+    const puntosPerdedor = document.getElementById("puntos-perdedor").value;
+    const comentario = document.getElementById("comentario").value;
+
+    // Validar que los campos no estén vacíos
+    if (!equipoGanador || !puntosGanador || !equipoPerdedor || !puntosPerdedor) {
+        alert("Por favor, complete todos los campos.");
+        return;
+    }
+
+    const resultado = {
+        equipoGanador,
+        puntosGanador,
+        equipoPerdedor,
+        puntosPerdedor,
+        comentario
+    };
+
+    let resultados = JSON.parse(localStorage.getItem("resultadosLigas")) || [];
+    resultados.push(resultado);
+    localStorage.setItem("resultadosLigas", JSON.stringify(resultados));
+
+    alert("Resultado guardado correctamente");
+}
+</script>
+
+</body>
+</html>
