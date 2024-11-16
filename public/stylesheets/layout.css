@@ -25,7 +25,7 @@ body {
 
 .image {
   height: 100%;
-  background: url('../img/inicio.png') center center/cover !important;
+  background: url('../images/inicio.png') center center/cover !important;
   flex: 0 1 53vw;
   position: relative;
 }
