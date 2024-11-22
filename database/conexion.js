@@ -5,5 +5,13 @@ const database = mysql.createConnection({
     password: 'You1234',
     database: 'GestionVoley'
   });
+
+  // verificacion de conexion de la base de datos
+database.connect((err) => {
+    if(err){
+        throw err;
+    }
+    console.log("Base de datos conectada");
+  })
   
   module.exports = database;
