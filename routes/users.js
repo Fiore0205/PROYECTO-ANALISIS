@@ -88,14 +88,30 @@ router.post('/crear_torneo', (req, res) => {
       // Llamar al SP para insertar la liga
       database.query('CALL sp_insertar_torneo(?, ?, ?)', [nombre_torneo, posicion_torneo, id_entrenador], (error, result) => {
           if (error) {
-              console.error('Error al insertar la torneo:', error);
-              return res.status(500).json({ message: 'Error en el servidor al insertar la liga' });
+              console.error('Error al insertar el torneo:', error);
+              return res.status(500).json({ message: 'Error en el servidor al insertar el torneo' });
           }
 
           const message = result[0]?.['El id del entrenador no existe'] || 'Torneo agregado correctamente';
           res.json({ message });
       });
   });
+});
+
+router.post('/crear_partido', (req, res) => {
+  const { comentario, puntos_ganador, puntos_perdedor, equipo_ganador, equipo_perdedor, } = req.body;
+  var resultadoPartido = puntos_ganador + "-" + puntos_perdedor;
+
+      // Llamar al SP para insertar la liga
+      database.query('CALL sp_insertar_partido(?, ?, ?, ?)', [comentario, resultadoPartido, equipo_ganador, equipo_perdedor], (error, result) => {
+          if (error) {
+              console.error('Error al insertar el partido:', error);
+              return res.status(500).json({ message: 'Error en el servidor al insertar el partido' });
+          }
+
+          const message = 'Partido agregado correctamente';
+          res.json({ message });
+      });
 });
 
 
