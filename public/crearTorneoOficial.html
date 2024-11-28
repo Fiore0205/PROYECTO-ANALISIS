@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="./javascripts/funciones.js"></script>
+    <title>Crear_Torneo</title>
+</head>
+<body>
+    <label>Nombre del Torneo</label>
+    <input type="text" id="nombre_torneo" placeholder="Ingrese el nombre del torneo">
+    <label>Posicion</label>
+    <input type="text" id="posicion_torneo" placeholder="Ingrese la posicion del torneo">
+    <button id="btn_crear_torneo" onclick="crearTorneo(document.getElementById('nombre_torneo').value, 
+    document.getElementById('posicion_torneo').value)">Crear Torneo</button>
+</body>
+</html>
