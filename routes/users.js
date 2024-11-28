@@ -114,6 +114,21 @@ router.post('/crear_partido', (req, res) => {
       });
 });
 
+// Ruta para obtener las ligas
+router.get('/obtener_ligas', (req, res) => {
+  const query = 'SELECT nombre_Liga, posicion_Liga FROM Liga ORDER BY posicion_Liga';
+
+  database.query(query, (error, results) => {
+      if (error) {
+          console.error('Error en la consulta:', error);
+          return res.status(500).json({ error: 'Error en el servidor' });
+      }
+
+      res.json(results);
+  });
+});
+
+
 
 
 module.exports = router;
