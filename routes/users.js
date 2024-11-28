@@ -128,6 +128,20 @@ router.get('/obtener_ligas', (req, res) => {
   });
 });
 
+// Ruta para obtener las ligas
+router.get('/obtener_torneos', (req, res) => {
+  const query = 'SELECT nombre_Torneo, posicion_Torneo FROM Torneo ORDER BY posicion_Torneo';
+
+  database.query(query, (error, results) => {
+      if (error) {
+          console.error('Error en la consulta:', error);
+          return res.status(500).json({ error: 'Error en el servidor' });
+      }
+
+      res.json(results);
+  });
+});
+
 
 
 

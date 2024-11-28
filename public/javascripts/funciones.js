@@ -106,5 +106,29 @@ function obtener_Ligas() {
 
 }
 
+function obtener_Torneos() {
+    fetch('/obtener_torneos')
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Error al obtener los torneos');
+            }
+            return response.json();
+        })
+        .then(data => {
+            const lista = document.getElementById('listaTorneos');
+            lista.innerHTML = ''; // Limpia la lista anterior
+            data.forEach(liga => {
+                const item = document.createElement('li');
+                item.textContent = `${liga.nombre_Torneo} - Posición: ${liga.posicion_Torneo}`;
+                lista.appendChild(item);
+            });
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('No se pudieron cargar los torneos.');
+        });
+
+}
+
 
 
