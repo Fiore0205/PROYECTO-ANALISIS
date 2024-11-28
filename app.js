@@ -13,6 +13,15 @@ var app = express();
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 
+const session = require('express-session');
+
+app.use(session({
+    secret: 'Gestion1234', 
+    resave: false,  //como se guardan las sesiones
+    saveUninitialized: false
+}));
+
+
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
