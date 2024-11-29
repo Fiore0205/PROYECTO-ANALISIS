@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="./javascripts/funciones.js"></script>
+    <title>Modificar_Amistoso</title>
+</head>
+<body>
+    <form id="modificarLiga">
+        <label for="nombreAntes">Nombre Pasado del Amistoso:</label>
+        <input type="text" id="nombreAntes" name="nombreAntes" placeholder="Nombre Pasado del Amistoso">
+        <label for="nuevoNombre">Nuevo Nombre del Amistoso:</label>
+        <input type="text" id="nuevoNombre" name="nuevoNombre" placeholder="Nuevo Nombre del Amistoso">
+        <br>
+        <button onclick="modificarAmistoso(document.getElementById('nombreAntes').value,
+    document.getElementById('nuevoNombre').value)">Modificar Amistoso</button>
+    </form>
+</body>
+</html>

@@ -327,6 +327,66 @@ router.put('/modificar_liga', (req, res) => {
   });
 });
 
+// Ruta para modificar un amistoso
+router.put('/modificar_amistoso', (req, res) => {
+  const { nombreAntes, nombreNuevo } = req.body;
+
+  if (!nombreAntes || !nombreNuevo) {
+      return res.status(400).json({ message: 'Todos los campos son requeridos' });
+  }
+
+  const query = `
+      UPDATE Amistoso
+      SET nombre_Amistoso = ?
+      WHERE nombre_Amistoso = ?;
+  `;
+
+  database.query(query, [nombreNuevo, nombreAntes], (error, result) => {
+      if (error) {
+          console.error('Error al modificar el amistoso:', error);
+          return res.status(500).json({ message: 'Error al modificar el amistoso' });
+      }
+
+      if (result.affectedRows === 0) {
+          return res.status(404).json({ message: 'Amistoso no encontrado' });
+      }
+
+      res.json({ message: 'Amistoso modificado exitosamente' });
+  });
+});
+
+// Ruta para modificar un amistoso
+// Ruta para modificar un partido
+router.put('/modificar_partido', (req, res) => {
+  const { ganador, comentario, perdedor } = req.body;
+
+  // Validación de los campos
+  if (!ganador || !comentario || !perdedor) {
+      return res.status(400).json({ message: 'Todos los campos son requeridos' });
+  }
+
+  // Consulta para actualizar el partido
+  const query = `
+      UPDATE Partido
+      SET notas_Partido = ?
+      WHERE nombre_equipo1 = ? AND nombre_equipo2 = ?;
+  `;
+
+  // Ejecutar la consulta
+  database.query(query, [comentario, ganador, perdedor], (error, result) => {
+      if (error) {
+          console.error('Error al modificar el partido:', error);
+          return res.status(500).json({ message: 'Error al modificar el partido' });
+      }
+
+      if (result.affectedRows === 0) {
+          return res.status(404).json({ message: 'Partido no encontrado' });
+      }
+
+      res.json({ message: 'Partido modificado exitosamente' });
+  });
+});
+
 
 
 module.exports = router;

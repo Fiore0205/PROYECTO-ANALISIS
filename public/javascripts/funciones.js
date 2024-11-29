@@ -311,6 +311,65 @@ function modificarLiga(nombreAntes, nombreNuevo, posicion) {
         });
 }
 
+function modificarAmistoso(nombreAntes, nombreNuevo) {
+    // Validacion de datos
+    if (!nombreAntes || !nombreNuevo) {
+        alert('Por favor, llenar todos los campos');
+        return;
+    }
+
+    fetch('/modificar_amistoso', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ nombreAntes: nombreAntes, nombreNuevo: nombreNuevo }),
+    })
+        .then((response) => {
+            if (!response.ok) {
+                throw new Error(`Error del servidor: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then((result) => {
+            alert(result.message);
+        })
+        .catch((error) => {
+            console.error('Error al modificar el amistoso:', error);
+            alert('Error al modificar el amistoso. Inténtalo de nuevo más tarde.');
+        });
+}
+
+function modificarPartido() {
+    // Obtener los valores de los campos
+    const ganador = document.getElementById('equipo-ganador').value;
+    const perdedor = document.getElementById('equipo-perdedor').value;
+    const comentario = document.getElementById('comentario').value;
+
+    // Validación de datos
+    if (!ganador || !comentario || !perdedor) {
+        alert('Por favor, llenar todos los campos');
+        return;
+    }
+
+    // Realizar la solicitud PUT
+    fetch('/modificar_partido', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ ganador: ganador, perdedor: perdedor, comentario: comentario }),
+    })
+    .then((response) => {
+        if (!response.ok) {
+            throw new Error(`Error del servidor: ${response.status}`);
+        }
+        return response.json();
+    })
+    .then((result) => {
+        alert(result.message);
+    })
+    .catch((error) => {
+        console.error('Error al modificar el partido:', error);
+        alert('Error al modificar el partido. Inténtalo de nuevo más tarde.');
+    });
+}
 
 
 

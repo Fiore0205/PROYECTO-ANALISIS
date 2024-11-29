@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="./javascripts/funciones.js"></script>
+    <title>Modificar Partido</title>
+</head>
+<body>
+    <form id="modificarPartido" onsubmit="event.preventDefault(); modificarPartido();">
+        <label for="equipo-ganador">Equipo Ganador:</label>
+        <input type="text" id="equipo-ganador" placeholder="Ingrese el nombre del equipo ganador" required>
+        
+        <label for="equipo-perdedor">Equipo Perdedor:</label>
+        <input type="text" id="equipo-perdedor" placeholder="Ingrese el nombre del equipo perdedor" required>
+        
+        <label for="comentario">Comentario:</label>
+        <textarea id="comentario" rows="3" placeholder="Añadir comentario..." required></textarea>
+        
+        <button type="submit">Modificar Partido</button>
+        <button type="button" class="boton retorno" onclick="location.href='torneos.html'">↩ Regresar</button>
+    </form>
+</body>
+</html>
