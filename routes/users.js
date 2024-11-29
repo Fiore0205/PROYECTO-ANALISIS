@@ -201,10 +201,23 @@ router.post('/crear_partido_torneo', (req, res) => {
       });
     });
 
-    // Ruta para obtener las ligas
+    // Ruta para obtener los torneos
     router.get('/obtener_torneos', (req, res) => {
 
       database.query('SELECT nombre_Torneo, posicion_Torneo FROM Torneo ORDER BY posicion_Torneo', (error, results) => {
+        if (error) {
+          console.error('Error en la consulta:', error);
+          return res.status(500).json({ error: 'Error en el servidor' });
+        }
+
+        res.json(results);
+      });
+    });
+
+    // Ruta para obtener los amistosos
+    router.get('/obtener_amistosos', (req, res) => {
+
+      database.query('SELECT nombre_Amistoso FROM Amistoso', (error, results) => {
         if (error) {
           console.error('Error en la consulta:', error);
           return res.status(500).json({ error: 'Error en el servidor' });

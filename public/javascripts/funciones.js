@@ -171,6 +171,35 @@ function obtener_Torneos() {
         });
 
 }
+
+function obtener_Amistoso() {
+    fetch('/obtener_amistosos')
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Error al obtener los torneos');
+            }
+            return response.json();
+        })
+        .then(data => {
+            const lista = document.getElementById('listaAmistoso');
+            lista.innerHTML = ''; // Limpia la lista anterior
+            data.forEach(amistoso => {
+                const item = document.createElement('li');
+                const button = document.createElement('button');
+                button.textContent = `${amistoso.nombre_Amistoso}`;
+                button.onclick = () => {
+                    window.location.href = 'amistoso_detalle.html'; // Redirige a otra página
+                };
+                lista.appendChild(item);
+                lista.appendChild(button);
+            });
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('No se pudieron cargar los amistosos.');
+        });
+
+}
 // mas que todo se creo estos metodos para poder identificar que dicho partido pertenece a una liga o torneo
 function obtener_nombre_liga() {
     const nombreLiga = localStorage.getItem('nombreLiga');
