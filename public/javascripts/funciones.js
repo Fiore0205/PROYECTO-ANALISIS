@@ -188,6 +188,7 @@ function obtener_Amistoso() {
                 const button = document.createElement('button');
                 button.textContent = `${amistoso.nombre_Amistoso}`;
                 button.onclick = () => {
+                    localStorage.setItem('nombreAmistoso', amistoso.nombre_Amistoso);
                     window.location.href = 'amistoso_detalle.html'; // Redirige a otra página
                 };
                 lista.appendChild(item);
@@ -200,7 +201,44 @@ function obtener_Amistoso() {
         });
 
 }
-// mas que todo se creo estos metodos para poder identificar que dicho partido pertenece a una liga o torneo
+
+function obtener_partidos_amistosos() {
+    const nombreAmistoso = localStorage.getItem('nombreAmistoso');
+    if (nombreAmistoso) {
+        document.getElementById('nombreAmistoso').textContent = nombreAmistoso; // Muestra el nombre del amistoso
+    } else {
+        document.getElementById('nombreAmistoso').textContent = 'Amistoso no encontrado';
+    }
+
+    fetch('/obtener_partidos_amistosos', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ nombreAmistoso }), // Enviar en el cuerpo
+    })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Error al obtener los partidos');
+            }
+            return response.json();
+        })
+        .then(data => {
+            const lista = document.getElementById('lista_Partidos_Amistosos');
+            lista.innerHTML = ''; // Limpia la lista anterior
+            data.forEach(partido_amistoso => {
+                const item = document.createElement('li');
+                item.textContent = `${partido_amistoso.nombre_equipo1} ${partido_amistoso.resultado} ${partido_amistoso.nombre_equipo2}`;
+                lista.appendChild(item);
+            });
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('No se pudieron cargar los amistosos.');
+        });
+}
+
+// mas que todo se creo estos metodos para poder identificar que dicho partido pertenece a una liga, torneo
 function obtener_nombre_liga() {
     const nombreLiga = localStorage.getItem('nombreLiga');
     if (nombreLiga) {
@@ -218,6 +256,8 @@ function obtener_nombre_torneo() {
         document.getElementById('nombreTorneo').textContent = 'Torneo no encontrado';
     }
 }
+
+
 
 
 

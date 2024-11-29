@@ -101,133 +101,177 @@ router.post('/crear_torneo', (req, res) => {
 //crea partido de una liga
 router.post('/crear_partido_liga', (req, res) => {
   const { comentario, puntos_ganador, puntos_perdedor, equipo_ganador, equipo_perdedor, nombreLiga } = req.body;
-  const resultadoPartido = puntos_ganador+"-"+puntos_perdedor;
+  const resultadoPartido = puntos_ganador + "-" + puntos_perdedor;
 
   database.query('SELECT id_Liga FROM Liga WHERE nombre_Liga = ?', [nombreLiga], (error, result) => {
+    if (error) {
+      console.error('Error al buscar la liga:', error);
+      return res.status(500).json({ message: 'Error al buscar la liga' });
+    }
+
+    if (result.length === 0) {
+      console.error('Liga no encontrada');
+      return res.status(404).json({ message: 'Liga no encontrada' });
+    }
+
+    const id_Liga = result[0].id_Liga;
+
+    database.query('CALL sp_insertar_partido(?, ?, ?, ?)', [comentario, resultadoPartido, equipo_ganador, equipo_perdedor], (error, result) => {
       if (error) {
-          console.error('Error al buscar la liga:', error);
-          return res.status(500).json({ message: 'Error al buscar la liga' });
+        console.error('Error al insertar el partido:', error);
+        return res.status(500).json({ message: 'Error en el servidor al insertar el partido' });
       }
 
-      if (result.length === 0) {
-          console.error('Liga no encontrada');
-          return res.status(404).json({ message: 'Liga no encontrada' });
+      console.log('Resultado de sp_insertar_partido:', result);
+
+      const id_Partido = result[0][0]?.id_Partido;
+
+      if (!id_Partido) {
+        console.error('ID del partido no encontrado en el resultado del SP');
+        return res.status(500).json({ message: 'Error al obtener el ID del partido' });
       }
 
-      const id_Liga = result[0].id_Liga;
+      database.query('CALL sp_insertar_partido_liga(?, ?)', [id_Liga, id_Partido], (error, result) => {
+        if (error) {
+          console.error('Error al asociar partido con la liga:', error);
+          return res.status(500).json({ message: 'Error al asociar partido con la liga' });
+        }
 
-      database.query('CALL sp_insertar_partido(?, ?, ?, ?)', [comentario, resultadoPartido, equipo_ganador, equipo_perdedor], (error, result) => {
-          if (error) {
-              console.error('Error al insertar el partido:', error);
-              return res.status(500).json({ message: 'Error en el servidor al insertar el partido' });
-          }
-
-          console.log('Resultado de sp_insertar_partido:', result);
-
-          const id_Partido = result[0][0]?.id_Partido;
-
-          if (!id_Partido) {
-              console.error('ID del partido no encontrado en el resultado del SP');
-              return res.status(500).json({ message: 'Error al obtener el ID del partido' });
-          }
-
-          database.query('CALL sp_insertar_partido_liga(?, ?)', [id_Liga, id_Partido], (error, result) => {
-              if (error) {
-                  console.error('Error al asociar partido con la liga:', error);
-                  return res.status(500).json({ message: 'Error al asociar partido con la liga' });
-              }
-
-              console.log('Resultado de sp_insertar_partido_liga:', result);
-              res.json({ message: 'Partido creado y asociado a la liga correctamente' });
-          });
+        console.log('Resultado de sp_insertar_partido_liga:', result);
+        res.json({ message: 'Partido creado y asociado a la liga correctamente' });
       });
+    });
   });
 });
 
 //crea partido de un torneo
 router.post('/crear_partido_torneo', (req, res) => {
   const { comentario, puntos_ganador, puntos_perdedor, equipo_ganador, equipo_perdedor, nombreTorneo } = req.body;
-  const resultadoPartido = puntos_ganador+"-"+puntos_perdedor;
+  const resultadoPartido = puntos_ganador + "-" + puntos_perdedor;
 
   database.query('SELECT id_Torneo FROM Torneo WHERE nombre_Torneo = ?', [nombreTorneo], (error, result) => {
+    if (error) {
+      console.error('Error al buscar el torneo:', error);
+      return res.status(500).json({ message: 'Error al buscar el torneo' });
+    }
+
+    if (result.length === 0) {
+      console.error('Torneo no encontrado');
+      return res.status(404).json({ message: 'Torneo no encontrada' });
+    }
+
+    const id_Torneo = result[0].id_Torneo;
+
+    database.query('CALL sp_insertar_partido(?, ?, ?, ?)', [comentario, resultadoPartido, equipo_ganador, equipo_perdedor], (error, result) => {
       if (error) {
-          console.error('Error al buscar el torneo:', error);
-          return res.status(500).json({ message: 'Error al buscar el torneo' });
+        console.error('Error al insertar el partido:', error);
+        return res.status(500).json({ message: 'Error en el servidor al insertar el partido' });
       }
 
-      if (result.length === 0) {
-          console.error('Torneo no encontrado');
-          return res.status(404).json({ message: 'Torneo no encontrada' });
+      const id_Partido = result[0][0]?.id_Partido;
+
+      if (!id_Partido) {
+        console.error('ID del partido no encontrado en el resultado del SP');
+        return res.status(500).json({ message: 'Error al obtener el ID del partido' });
       }
 
-      const id_Torneo = result[0].id_Torneo;
+      database.query('CALL sp_insertar_partido_torneo(?, ?)', [id_Torneo, id_Partido], (error, result) => {
+        if (error) {
+          console.error('Error al asociar partido con el torneo:', error);
+          return res.status(500).json({ message: 'Error al asociar partido con el torneo' });
+        }
 
-      database.query('CALL sp_insertar_partido(?, ?, ?, ?)', [comentario, resultadoPartido, equipo_ganador, equipo_perdedor], (error, result) => {
-          if (error) {
-              console.error('Error al insertar el partido:', error);
-              return res.status(500).json({ message: 'Error en el servidor al insertar el partido' });
-          }
-
-          const id_Partido = result[0][0]?.id_Partido;
-
-          if (!id_Partido) {
-              console.error('ID del partido no encontrado en el resultado del SP');
-              return res.status(500).json({ message: 'Error al obtener el ID del partido' });
-          }
-
-          database.query('CALL sp_insertar_partido_torneo(?, ?)', [id_Torneo, id_Partido], (error, result) => {
-              if (error) {
-                  console.error('Error al asociar partido con el torneo:', error);
-                  return res.status(500).json({ message: 'Error al asociar partido con el torneo' });
-              }
-
-              res.json({ message: 'Partido creado y asociado a el torneo correctamente' });
-          });
+        res.json({ message: 'Partido creado y asociado a el torneo correctamente' });
       });
+    });
   });
 });
 
 
-    // Ruta para obtener las ligas
-    router.get('/obtener_ligas', (req, res) => {
+// Ruta para obtener las ligas
+router.get('/obtener_ligas', (req, res) => {
 
-      database.query('SELECT nombre_Liga, posicion_Liga FROM Liga ORDER BY posicion_Liga', (error, results) => {
-        if (error) {
-          console.error('Error en la consulta:', error);
-          return res.status(500).json({ error: 'Error en el servidor' });
-        }
+  database.query('SELECT nombre_Liga, posicion_Liga FROM Liga ORDER BY posicion_Liga', (error, results) => {
+    if (error) {
+      console.error('Error en la consulta:', error);
+      return res.status(500).json({ error: 'Error en el servidor' });
+    }
 
-        res.json(results);
-      });
+    res.json(results);
+  });
+});
+
+// Ruta para obtener los torneos
+router.get('/obtener_torneos', (req, res) => {
+
+  database.query('SELECT nombre_Torneo, posicion_Torneo FROM Torneo ORDER BY posicion_Torneo', (error, results) => {
+    if (error) {
+      console.error('Error en la consulta:', error);
+      return res.status(500).json({ error: 'Error en el servidor' });
+    }
+
+    res.json(results);
+  });
+});
+
+// Ruta para obtener los amistosos
+router.get('/obtener_amistosos', (req, res) => {
+
+  database.query('SELECT nombre_Amistoso FROM Amistoso', (error, results) => {
+    if (error) {
+      console.error('Error en la consulta:', error);
+      return res.status(500).json({ error: 'Error en el servidor' });
+    }
+
+    res.json(results);
+  });
+});
+
+// Ruta para obtener los partidos amistosos
+router.post('/obtener_partidos_amistosos', (req, res) => {
+  const { nombreAmistoso } = req.body;
+
+  if (!nombreAmistoso) {
+    return res.status(400).json({ message: 'Se requiere el nombre del amistoso' });
+  }
+
+  database.query('SELECT id_Amistoso FROM Amistoso WHERE nombre_Amistoso = ?', [nombreAmistoso], (error, result) => {
+    if (error) {
+      console.error('Error al buscar el amistoso:', error);
+      return res.status(500).json({ message: 'Error al buscar el amistoso' });
+    }
+
+    if (result.length === 0) {
+      return res.status(404).json({ message: 'Amistoso no encontrado' });
+    }
+
+    const id_Amistoso = result[0].id_Amistoso;
+
+    const query = `
+          SELECT
+              P.resultado,
+              P.nombre_equipo1,
+              P.nombre_equipo2
+          FROM 
+              Partido_Amistoso PA
+          INNER JOIN 
+              Partido P ON PA.id_Partido = P.id_Partido
+          WHERE 
+              PA.id_Amistoso = ?;
+      `;
+
+    database.query(query, [id_Amistoso], (error, results) => {
+      if (error) {
+        console.error('Error en la consulta:', error);
+        return res.status(500).json({ error: 'Error en el servidor' });
+      }
+      console.log('Partidos encontrados:', results);
+      res.json(results);
     });
-
-    // Ruta para obtener los torneos
-    router.get('/obtener_torneos', (req, res) => {
-
-      database.query('SELECT nombre_Torneo, posicion_Torneo FROM Torneo ORDER BY posicion_Torneo', (error, results) => {
-        if (error) {
-          console.error('Error en la consulta:', error);
-          return res.status(500).json({ error: 'Error en el servidor' });
-        }
-
-        res.json(results);
-      });
-    });
-
-    // Ruta para obtener los amistosos
-    router.get('/obtener_amistosos', (req, res) => {
-
-      database.query('SELECT nombre_Amistoso FROM Amistoso', (error, results) => {
-        if (error) {
-          console.error('Error en la consulta:', error);
-          return res.status(500).json({ error: 'Error en el servidor' });
-        }
-
-        res.json(results);
-      });
-    });
+  });
+});
 
 
 
 
-    module.exports = router;
+module.exports = router;

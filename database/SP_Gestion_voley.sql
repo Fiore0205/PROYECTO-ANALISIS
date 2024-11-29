@@ -98,6 +98,7 @@ CREATE PROCEDURE sp_insertar_partido(
 BEGIN
     INSERT INTO Partido (notas_Partido, resultado, nombre_equipo1, nombre_equipo2)
     VALUES (p_notas_partido, p_resultado, p_nombre_equipo1, p_nombre_equipo2);
+    SELECT LAST_INSERT_ID() AS id_Partido;
     SELECT 'Partido agregado correctamente';
 END //
 DELIMITER ;
