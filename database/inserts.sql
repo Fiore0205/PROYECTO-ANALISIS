@@ -16,15 +16,15 @@ CALL sp_insertar_partido('El equipo visitante dominó completamente.','0-3', 'UC
 CALL sp_insertar_amistoso('Amistoso UCR', 3, 6);
 
 UPDATE Usuario
-SET nombre_Usuario = 'Andy Fuller'
+SET nombre_Usuario = 'AndyFuller'
 WHERE id_Usuario = 2;
 
 UPDATE Usuario
-SET nombre_Usuario = 'Felipe Jenkins'
+SET nombre_Usuario = 'FelipeJenkins'
 WHERE id_Usuario = 3;
 
 UPDATE Usuario
-SET nombre_Usuario = 'Patrick Lisby'
+SET nombre_Usuario = 'PatrickLisby'
 WHERE id_Usuario = 4;
 
 
