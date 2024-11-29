@@ -257,6 +257,62 @@ function obtener_nombre_torneo() {
     }
 }
 
+function modificarTorneo(nombreAntes, nombreNuevo, posicion) {
+    // Validacion de datos
+    if (!nombreAntes || !posicion || !nombreNuevo) {
+        alert('Por favor, llenar todos los campos');
+        return;
+    }
+
+    fetch('/modificar_torneo', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ nombreAntes: nombreAntes, nombreNuevo: nombreNuevo, posicion: parseInt(posicion, 10) }),
+    })
+        .then((response) => {
+            if (!response.ok) {
+                throw new Error(`Error del servidor: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then((result) => {
+            alert(result.message);
+        })
+        .catch((error) => {
+            console.error('Error al modificar el torneo:', error);
+            alert('Error al modificar el torneo. Inténtalo de nuevo más tarde.');
+        });
+}
+
+function modificarLiga(nombreAntes, nombreNuevo, posicion) {
+    // Validacion de datos
+    if (!nombreAntes || !posicion || !nombreNuevo) {
+        alert('Por favor, llenar todos los campos');
+        return;
+    }
+
+    fetch('/modificar_liga', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ nombreAntes: nombreAntes, nombreNuevo: nombreNuevo, posicion: parseInt(posicion, 10) }),
+    })
+        .then((response) => {
+            if (!response.ok) {
+                throw new Error(`Error del servidor: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then((result) => {
+            alert(result.message);
+        })
+        .catch((error) => {
+            console.error('Error al modificar la liga:', error);
+            alert('Error al modificar la liga. Inténtalo de nuevo más tarde.');
+        });
+}
+
+
+
 
 
 

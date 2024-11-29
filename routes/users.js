@@ -271,6 +271,61 @@ router.post('/obtener_partidos_amistosos', (req, res) => {
   });
 });
 
+// Ruta para modificar un torneo
+router.put('/modificar_torneo', (req, res) => {
+  const { nombreAntes, nombreNuevo, posicion } = req.body;
+
+  if (!nombreAntes || !nombreNuevo || !posicion) {
+      return res.status(400).json({ message: 'Todos los campos son requeridos' });
+  }
+
+  const query = `
+      UPDATE Torneo
+      SET nombre_Torneo = ?, posicion_Torneo = ?
+      WHERE nombre_Torneo = ?;
+  `;
+
+  database.query(query, [nombreNuevo, posicion, nombreAntes], (error, result) => {
+      if (error) {
+          console.error('Error al modificar el torneo:', error);
+          return res.status(500).json({ message: 'Error al modificar el torneo' });
+      }
+
+      if (result.affectedRows === 0) {
+          return res.status(404).json({ message: 'Torneo no encontrado' });
+      }
+
+      res.json({ message: 'Torneo modificado exitosamente' });
+  });
+});
+
+// Ruta para modificar un torneo
+router.put('/modificar_liga', (req, res) => {
+  const { nombreAntes, nombreNuevo, posicion } = req.body;
+
+  if (!nombreAntes || !nombreNuevo || !posicion) {
+      return res.status(400).json({ message: 'Todos los campos son requeridos' });
+  }
+
+  const query = `
+      UPDATE Liga
+      SET nombre_Liga = ?, posicion_Liga = ?
+      WHERE nombre_Liga = ?;
+  `;
+
+  database.query(query, [nombreNuevo, posicion, nombreAntes], (error, result) => {
+      if (error) {
+          console.error('Error al modificar el torneo:', error);
+          return res.status(500).json({ message: 'Error al modificar la liga' });
+      }
+
+      if (result.affectedRows === 0) {
+          return res.status(404).json({ message: 'Liga no encontrada' });
+      }
+
+      res.json({ message: 'Liga modificada exitosamente' });
+  });
+});
 
 
 

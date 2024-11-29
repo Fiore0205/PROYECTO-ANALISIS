@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="./javascripts/funciones.js"></script>
+    <title>Modificar_Liga</title>
+</head>
+<body>
+    <form id="modificarLiga">
+        <label for="nombreAntes">Nombre Pasado de la Liga:</label>
+        <input type="text" id="nombreAntes" name="nuevoNombre" placeholder="Nombre Pasado de la Liga">
+        <label for="nuevoNombre">Nuevo Nombre de la Liga:</label>
+        <input type="text" id="nuevoNombre" name="nuevoNombre" placeholder="Nuevo Nombre de la Liga">
+        <br>
+        <label for="nuevaPosicion">Nueva Posición:</label>
+        <input type="number" id="nuevaPosicion" name="nuevaPosicion" placeholder="Nueva Posición de la Liga">
+        <br>
+        <button onclick="modificarLiga(document.getElementById('nombreAntes').value,
+    document.getElementById('nuevoNombre').value, document.getElementById('nuevaPosicion').value)">Modificar Liga</button>
+    </form>
+</body>
+</html>
