@@ -276,7 +276,7 @@ router.put('/modificar_torneo', (req, res) => {
   const { nombreAntes, nombreNuevo, posicion } = req.body;
 
   if (!nombreAntes || !nombreNuevo || !posicion) {
-      return res.status(400).json({ message: 'Todos los campos son requeridos' });
+    return res.status(400).json({ message: 'Todos los campos son requeridos' });
   }
 
   const query = `
@@ -286,16 +286,16 @@ router.put('/modificar_torneo', (req, res) => {
   `;
 
   database.query(query, [nombreNuevo, posicion, nombreAntes], (error, result) => {
-      if (error) {
-          console.error('Error al modificar el torneo:', error);
-          return res.status(500).json({ message: 'Error al modificar el torneo' });
-      }
+    if (error) {
+      console.error('Error al modificar el torneo:', error);
+      return res.status(500).json({ message: 'Error al modificar el torneo' });
+    }
 
-      if (result.affectedRows === 0) {
-          return res.status(404).json({ message: 'Torneo no encontrado' });
-      }
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ message: 'Torneo no encontrado' });
+    }
 
-      res.json({ message: 'Torneo modificado exitosamente' });
+    res.json({ message: 'Torneo modificado exitosamente' });
   });
 });
 
@@ -304,7 +304,7 @@ router.put('/modificar_liga', (req, res) => {
   const { nombreAntes, nombreNuevo, posicion } = req.body;
 
   if (!nombreAntes || !nombreNuevo || !posicion) {
-      return res.status(400).json({ message: 'Todos los campos son requeridos' });
+    return res.status(400).json({ message: 'Todos los campos son requeridos' });
   }
 
   const query = `
@@ -314,16 +314,16 @@ router.put('/modificar_liga', (req, res) => {
   `;
 
   database.query(query, [nombreNuevo, posicion, nombreAntes], (error, result) => {
-      if (error) {
-          console.error('Error al modificar el torneo:', error);
-          return res.status(500).json({ message: 'Error al modificar la liga' });
-      }
+    if (error) {
+      console.error('Error al modificar el torneo:', error);
+      return res.status(500).json({ message: 'Error al modificar la liga' });
+    }
 
-      if (result.affectedRows === 0) {
-          return res.status(404).json({ message: 'Liga no encontrada' });
-      }
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ message: 'Liga no encontrada' });
+    }
 
-      res.json({ message: 'Liga modificada exitosamente' });
+    res.json({ message: 'Liga modificada exitosamente' });
   });
 });
 
@@ -332,7 +332,7 @@ router.put('/modificar_amistoso', (req, res) => {
   const { nombreAntes, nombreNuevo } = req.body;
 
   if (!nombreAntes || !nombreNuevo) {
-      return res.status(400).json({ message: 'Todos los campos son requeridos' });
+    return res.status(400).json({ message: 'Todos los campos son requeridos' });
   }
 
   const query = `
@@ -342,16 +342,16 @@ router.put('/modificar_amistoso', (req, res) => {
   `;
 
   database.query(query, [nombreNuevo, nombreAntes], (error, result) => {
-      if (error) {
-          console.error('Error al modificar el amistoso:', error);
-          return res.status(500).json({ message: 'Error al modificar el amistoso' });
-      }
+    if (error) {
+      console.error('Error al modificar el amistoso:', error);
+      return res.status(500).json({ message: 'Error al modificar el amistoso' });
+    }
 
-      if (result.affectedRows === 0) {
-          return res.status(404).json({ message: 'Amistoso no encontrado' });
-      }
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ message: 'Amistoso no encontrado' });
+    }
 
-      res.json({ message: 'Amistoso modificado exitosamente' });
+    res.json({ message: 'Amistoso modificado exitosamente' });
   });
 });
 
@@ -362,7 +362,7 @@ router.put('/modificar_partido', (req, res) => {
 
   // Validación de los campos
   if (!ganador || !comentario || !perdedor) {
-      return res.status(400).json({ message: 'Todos los campos son requeridos' });
+    return res.status(400).json({ message: 'Todos los campos son requeridos' });
   }
 
   // Consulta para actualizar el partido
@@ -374,16 +374,131 @@ router.put('/modificar_partido', (req, res) => {
 
   // Ejecutar la consulta
   database.query(query, [comentario, ganador, perdedor], (error, result) => {
+    if (error) {
+      console.error('Error al modificar el partido:', error);
+      return res.status(500).json({ message: 'Error al modificar el partido' });
+    }
+
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ message: 'Partido no encontrado' });
+    }
+
+    res.json({ message: 'Partido modificado exitosamente' });
+  });
+});
+
+// Obtener partidos en una liga
+router.post('/partidos_liga', async (req, res) => {
+  const { nombreLiga } = req.body;
+  const idUsuario = req.session.userId;
+
+  if (!idUsuario) {
+    return res.status(401).json({ message: 'No has iniciado sesión' });
+  }
+
+  try {
+    const idLiga = await obtenerIdRelacion(nombreLiga, 'liga', idUsuario);
+
+    if (!idLiga) {
+      return res.status(404).json({ message: 'Liga no encontrada o no asociada al usuario' });
+    }
+
+    const query = `
+      SELECT
+          P.resultado,
+          P.nombre_equipo1,
+          P.nombre_equipo2
+      FROM 
+          Partido_Liga PL
+      INNER JOIN 
+          Partido P ON PL.id_Partido = P.id_Partido
+      WHERE 
+          PL.id_Liga = ?;
+    `;
+
+    database.query(query, [idLiga], (error, results) => {
       if (error) {
-          console.error('Error al modificar el partido:', error);
-          return res.status(500).json({ message: 'Error al modificar el partido' });
+        console.error('Error al obtener partidos de liga:', error);
+        return res.status(500).json({ message: 'Error al obtener los partidos de liga' });
       }
 
-      if (result.affectedRows === 0) {
-          return res.status(404).json({ message: 'Partido no encontrado' });
-      }
+      res.json(results);
+    });
+  } catch (error) {
+    console.error('Error en /partidos_liga:', error);
+    res.status(500).json({ message: 'Error en el servidor' });
+  }
+});
 
-      res.json({ message: 'Partido modificado exitosamente' });
+// Eliminar una liga por ID
+router.delete('/eliminar_liga/:id', (req, res) => {
+  const id = req.params.id;
+
+  database.query('DELETE FROM Liga WHERE id_Liga = ?', [id], (error, result) => {
+    if (error) {
+      console.error('Error al eliminar la liga:', error);
+      return res.status(500).json({ message: 'Error al eliminar la liga' });
+    }
+
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ message: 'Liga no encontrada' });
+    }
+
+    res.json({ message: 'Liga eliminada exitosamente' });
+  });
+});
+
+// Eliminar un torneo por ID
+router.delete('/eliminar_torneo/:id', (req, res) => {
+  const id = req.params.id;
+
+  database.query('DELETE FROM Torneo WHERE id_Torneo = ?', [id], (error, result) => {
+    if (error) {
+      console.error('Error al eliminar el torneo:', error);
+      return res.status(500).json({ message: 'Error al eliminar el torneo' });
+    }
+
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ message: 'Torneo no encontrado' });
+    }
+
+    res.json({ message: 'Torneo eliminado exitosamente' });
+  });
+});
+
+// Eliminar un partido por ID
+router.delete('/eliminar_partido/:id', (req, res) => {
+  const id = req.params.id;
+
+  database.query('DELETE FROM Partido WHERE id_Partido = ?', [id], (error, result) => {
+    if (error) {
+      console.error('Error al eliminar el partido:', error);
+      return res.status(500).json({ message: 'Error al eliminar el partido' });
+    }
+
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ message: 'Partido no encontrado' });
+    }
+
+    res.json({ message: 'Partido eliminado exitosamente' });
+  });
+});
+
+// Eliminar un amistoso por ID
+router.delete('/eliminar_amistoso/:id', (req, res) => {
+  const id = req.params.id;
+
+  database.query('DELETE FROM Amistoso WHERE id_Amistoso = ?', [id], (error, result) => {
+    if (error) {
+      console.error('Error al eliminar el amistoso:', error);
+      return res.status(500).json({ message: 'Error al eliminar el amistoso' });
+    }
+
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ message: 'Amistoso no encontrado' });
+    }
+
+    res.json({ message: 'Amistoso eliminado exitosamente' });
   });
 });
 
