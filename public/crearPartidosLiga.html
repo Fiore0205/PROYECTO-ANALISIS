@@ -10,7 +10,7 @@
 <body>
 
 <div class="ventana">
-    <h1>Crear Liga / Ligas Actuales</h1>
+    <h1 id="nombreLiga"></h1>
     <label for="equipo-ganador">Equipo Ganador</label>
     <input type="text" id="equipo-ganador" placeholder="Ingrese el nombre del equipo ganador">
     
@@ -28,8 +28,10 @@
     
     <button class="boton" onclick="crearPartido(document.getElementById('equipo-ganador').value, 
     document.getElementById('puntos-ganador').value, document.getElementById('equipo-perdedor').value, 
-    document.getElementById('puntos-perdedor').value, document.getElementById('comentario').value)">Guardar Resultado</button>
+    document.getElementById('puntos-perdedor').value, document.getElementById('comentario').value,
+    document.getElementById('nombreLiga').textContent)">Guardar Resultado</button>
     <button class="boton retorno" onclick="location.href='ligas.html'">↩ Regresar</button>
+    <script>document.addEventListener('DOMContentLoaded', obtener_nombre_liga());</script>
 </div>
 
 <script>
