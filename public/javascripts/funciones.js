@@ -52,19 +52,49 @@ function crearTorneo(nombre, posicion) {
         });
 }
 
-function crearPartido(equipo_ganador, puntos_ganador, equipo_perdedor, puntos_perdedor, comentario, nombreLiga) {
+function crearPartidoLiga(equipo_ganador, puntos_ganador, equipo_perdedor, puntos_perdedor, comentario, nombreLiga) {
     // Validacion de datos
     if (!equipo_ganador || !puntos_ganador || !equipo_perdedor || !puntos_perdedor || !comentario) {
         alert('Por favor, llenar todos los campos');
         return;
     }
 
-    fetch('/crear_partido', {
+    fetch('/crear_partido_liga', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
             comentario: comentario, puntos_ganador: puntos_ganador, puntos_perdedor: puntos_perdedor,
             equipo_ganador: equipo_ganador, equipo_perdedor: equipo_perdedor, nombreLiga: nombreLiga
+        }),
+    })
+        .then((response) => {
+            if (!response.ok) {
+                throw new Error(`Error del servidor: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then((result) => {
+            alert(result.message);
+        })
+        .catch((error) => {
+            console.error('Error al crear el partido:', error);
+            alert('Error al crear el partido. Inténtalo de nuevo más tarde.');
+        });
+}
+
+function crearPartidoTorneo(equipo_ganador, puntos_ganador, equipo_perdedor, puntos_perdedor, comentario, nombreTorneo) {
+    // Validacion de datos
+    if (!equipo_ganador || !puntos_ganador || !equipo_perdedor || !puntos_perdedor || !comentario) {
+        alert('Por favor, llenar todos los campos');
+        return;
+    }
+
+    fetch('/crear_partido_torneo', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            comentario: comentario, puntos_ganador: puntos_ganador, puntos_perdedor: puntos_perdedor,
+            equipo_ganador: equipo_ganador, equipo_perdedor: equipo_perdedor, nombreTorneo: nombreTorneo
         }),
     })
         .then((response) => {
@@ -111,15 +141,6 @@ function obtener_Ligas() {
         });
 
 }
-// mas que todo se creo para poder identificar que dicho partido pertenece a una liga
-function obtener_nombre_liga() {
-    const nombreLiga = localStorage.getItem('nombreLiga');
-    if (nombreLiga) {
-        document.getElementById('nombreLiga').textContent = nombreLiga; // Muestra el nombre de la liga
-    } else {
-        document.getElementById('nombreLiga').textContent = 'Liga no encontrada';
-    }
-}
 
 function obtener_Torneos() {
     fetch('/obtener_torneos')
@@ -134,8 +155,14 @@ function obtener_Torneos() {
             lista.innerHTML = ''; // Limpia la lista anterior
             data.forEach(torneo => {
                 const item = document.createElement('li');
-                item.textContent = `${torneo.nombre_Torneo} - Posición: ${torneo.posicion_Torneo}`;
+                const button = document.createElement('button');
+                button.textContent = `${torneo.nombre_Torneo} - Posición: ${torneo.posicion_Torneo}`;
+                button.onclick = () => {
+                    localStorage.setItem('nombreTorneo', torneo.nombre_Torneo);
+                    window.location.href = 'torneo_detalle.html'; // Redirige a otra página
+                };
                 lista.appendChild(item);
+                lista.appendChild(button);
             });
         })
         .catch(error => {
@@ -144,22 +171,26 @@ function obtener_Torneos() {
         });
 
 }
-
-function cargarDetalleLiga() {
-    // Obtener el id_Liga de la URL
-    const urlParams = new URLSearchParams(window.location.search);
-    const id_Liga = urlParams.get('id_Liga');
-
-    // Mostrar información básica
-    const ligaInfo = document.getElementById('ligaInfo');
-    ligaInfo.textContent = `Estás viendo la liga con ID: ${id_Liga}`;
-
-    // Configurar el botón para mostrar el ID
-    const boton = document.getElementById('mostrarIdLiga');
-    boton.addEventListener('click', () => {
-        alert(`ID de la liga: ${id_Liga}`);
-    });
+// mas que todo se creo estos metodos para poder identificar que dicho partido pertenece a una liga o torneo
+function obtener_nombre_liga() {
+    const nombreLiga = localStorage.getItem('nombreLiga');
+    if (nombreLiga) {
+        document.getElementById('nombreLiga').textContent = nombreLiga; // Muestra el nombre de la liga
+    } else {
+        document.getElementById('nombreLiga').textContent = 'Liga no encontrada';
+    }
 }
+
+function obtener_nombre_torneo() {
+    const nombreTorneo = localStorage.getItem('nombreTorneo');
+    if (nombreTorneo) {
+        document.getElementById('nombreTorneo').textContent = nombreTorneo; // Muestra el nombre del torneo
+    } else {
+        document.getElementById('nombreTorneo').textContent = 'Torneo no encontrado';
+    }
+}
+
+
 
 
 

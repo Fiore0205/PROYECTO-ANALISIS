@@ -26,12 +26,12 @@
     <label for="comentario">Comentario</label>
     <textarea id="comentario" rows="3" placeholder="Añadir comentario..."></textarea>
     
-    <button class="boton" onclick="crearPartido(document.getElementById('equipo-ganador').value, 
+    <button class="boton" onclick="crearPartidoLiga(document.getElementById('equipo-ganador').value, 
     document.getElementById('puntos-ganador').value, document.getElementById('equipo-perdedor').value, 
     document.getElementById('puntos-perdedor').value, document.getElementById('comentario').value,
     document.getElementById('nombreLiga').textContent)">Guardar Resultado</button>
     <button class="boton retorno" onclick="location.href='ligas.html'">↩ Regresar</button>
-    <script>document.addEventListener('DOMContentLoaded', obtener_nombre_liga());</script>
+    <script>document.addEventListener('DOMContentLoaded', obtener_nombre_torneo());</script>
 </div>
 
 <script>

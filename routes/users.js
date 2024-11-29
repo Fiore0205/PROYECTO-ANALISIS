@@ -99,11 +99,9 @@ router.post('/crear_torneo', (req, res) => {
 });
 
 //crea partido de una liga
-router.post('/crear_partido', (req, res) => {
+router.post('/crear_partido_liga', (req, res) => {
   const { comentario, puntos_ganador, puntos_perdedor, equipo_ganador, equipo_perdedor, nombreLiga } = req.body;
   const resultadoPartido = puntos_ganador+"-"+puntos_perdedor;
-
-  console.log('Datos recibidos:', { comentario, puntos_ganador, puntos_perdedor, equipo_ganador, equipo_perdedor, nombreLiga });
 
   database.query('SELECT id_Liga FROM Liga WHERE nombre_Liga = ?', [nombreLiga], (error, result) => {
       if (error) {
@@ -117,7 +115,6 @@ router.post('/crear_partido', (req, res) => {
       }
 
       const id_Liga = result[0].id_Liga;
-      console.log('ID de la Liga:', id_Liga);
 
       database.query('CALL sp_insertar_partido(?, ?, ?, ?)', [comentario, resultadoPartido, equipo_ganador, equipo_perdedor], (error, result) => {
           if (error) {
@@ -127,13 +124,12 @@ router.post('/crear_partido', (req, res) => {
 
           console.log('Resultado de sp_insertar_partido:', result);
 
-          const id_Partido = result[0][0]?.id_Partido || null;
+          const id_Partido = result[0][0]?.id_Partido;
+
           if (!id_Partido) {
               console.error('ID del partido no encontrado en el resultado del SP');
               return res.status(500).json({ message: 'Error al obtener el ID del partido' });
           }
-
-          console.log('ID del Partido:', id_Partido);
 
           database.query('CALL sp_insertar_partido_liga(?, ?)', [id_Liga, id_Partido], (error, result) => {
               if (error) {
@@ -143,6 +139,49 @@ router.post('/crear_partido', (req, res) => {
 
               console.log('Resultado de sp_insertar_partido_liga:', result);
               res.json({ message: 'Partido creado y asociado a la liga correctamente' });
+          });
+      });
+  });
+});
+
+//crea partido de un torneo
+router.post('/crear_partido_torneo', (req, res) => {
+  const { comentario, puntos_ganador, puntos_perdedor, equipo_ganador, equipo_perdedor, nombreTorneo } = req.body;
+  const resultadoPartido = puntos_ganador+"-"+puntos_perdedor;
+
+  database.query('SELECT id_Torneo FROM Torneo WHERE nombre_Torneo = ?', [nombreTorneo], (error, result) => {
+      if (error) {
+          console.error('Error al buscar el torneo:', error);
+          return res.status(500).json({ message: 'Error al buscar el torneo' });
+      }
+
+      if (result.length === 0) {
+          console.error('Torneo no encontrado');
+          return res.status(404).json({ message: 'Torneo no encontrada' });
+      }
+
+      const id_Torneo = result[0].id_Torneo;
+
+      database.query('CALL sp_insertar_partido(?, ?, ?, ?)', [comentario, resultadoPartido, equipo_ganador, equipo_perdedor], (error, result) => {
+          if (error) {
+              console.error('Error al insertar el partido:', error);
+              return res.status(500).json({ message: 'Error en el servidor al insertar el partido' });
+          }
+
+          const id_Partido = result[0][0]?.id_Partido;
+
+          if (!id_Partido) {
+              console.error('ID del partido no encontrado en el resultado del SP');
+              return res.status(500).json({ message: 'Error al obtener el ID del partido' });
+          }
+
+          database.query('CALL sp_insertar_partido_torneo(?, ?)', [id_Torneo, id_Partido], (error, result) => {
+              if (error) {
+                  console.error('Error al asociar partido con el torneo:', error);
+                  return res.status(500).json({ message: 'Error al asociar partido con el torneo' });
+              }
+
+              res.json({ message: 'Partido creado y asociado a el torneo correctamente' });
           });
       });
   });

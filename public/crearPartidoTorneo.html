@@ -3,28 +3,35 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title> Crear Torneo / Torneos Actuales</title>
+    <title> Crear Partido</title>
+    <script src="./javascripts/funciones.js"></script>
     <link rel="stylesheet" href="stylesheets/crearligas.css">
 </head>
 <body>
 
 <div class="ventana">
-    <h1>Crear Torneo / Torneos Actuales</h1>
-    <label for="equipo-ganador">Nombre del Torneo</label>
-    <input type="text" id="equipo-ganador" placeholder="Ingrese el nombre del torneo">
+    <h1 id="nombreTorneo"></h1>
+    <label for="equipo-ganador">Equipo Ganador</label>
+    <input type="text" id="equipo-ganador" placeholder="Ingrese el nombre del equipo ganador">
     
-    <label for="puntos-ganador">Cantidad de equipos</label>
-    <input type="number" id="puntos-ganador" placeholder="Ingrese la cantidad de equipos">
+    <label for="puntos-ganador">Puntos Ganador</label>
+    <input type="number" id="puntos-ganador" placeholder="Ingrese los puntos del ganador">
     
-    <label for="equipo-perdedor">Cantidad de jugadores</label>
-    <input type="text" id="equipo-perdedor" placeholder="Ingrese el nombre de la cantidad de jugadores">
+    <label for="equipo-perdedor">Equipo Perdedor</label>
+    <input type="text" id="equipo-perdedor" placeholder="Ingrese el nombre del equipo perdedor">
     
+    <label for="puntos-perdedor">Puntos Perdedor</label>
+    <input type="number" id="puntos-perdedor" placeholder="Ingrese los puntos del perdedor">
     
     <label for="comentario">Comentario</label>
     <textarea id="comentario" rows="3" placeholder="Añadir comentario..."></textarea>
     
-    <button class="boton" onclick="guardarResultado()">Guardar Resultado</button>
+    <button class="boton" onclick="crearPartidoTorneo(document.getElementById('equipo-ganador').value, 
+    document.getElementById('puntos-ganador').value, document.getElementById('equipo-perdedor').value, 
+    document.getElementById('puntos-perdedor').value, document.getElementById('comentario').value,
+    document.getElementById('nombreTorneo').textContent)">Guardar Resultado</button>
     <button class="boton retorno" onclick="location.href='torneos.html'">↩ Regresar</button>
+    <script>document.addEventListener('DOMContentLoaded', obtener_nombre_torneo());</script>
 </div>
 
 <script>
